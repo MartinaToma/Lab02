@@ -6,15 +6,17 @@ import java.util.List;
 
 public class AlienDictionary   {	
 	
-	List<Word> parole=new LinkedList<Word>();
+	List<WordEnhanced> parole=new LinkedList<WordEnhanced>();
 	
 	public void addWord(String alienWord,String translation) {
 		
 		int flag=0;
 		
-		for(Word w:parole) {
+		for(WordEnhanced w:parole) {
 			if(w.equals(alienWord)) {
-				w.setTranslation(translation);
+				//w.setTranslation(translation);
+				w.addSinonimi(translation);
+				
 				flag=1;
 				return;
 			}
@@ -22,19 +24,27 @@ public class AlienDictionary   {
 		
 		if(flag==0) {
 		
-			Word p=new Word(alienWord,translation);
-			parole.add(p);			
+			WordEnhanced p=new WordEnhanced(alienWord,translation);
+			parole.add(p);
+			p.addSinonimi(translation);
 		}
+		
 				
 		
 	}
 	
 	public String translateWord(String alienWord) {
-		
-		for(Word w:parole) {
+		String s="";
+		for(WordEnhanced w:parole) {
 			if(w.equals(alienWord)) {
-				return w.getTranslation();
+				for(String stringa: w.getSinonimi()) {
+					s+=stringa+"\n";
+				}
+				
 			}
+		}
+		if(s!="") {
+			return s.trim();
 		}
 		
 		return null;
